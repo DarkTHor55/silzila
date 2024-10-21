@@ -130,6 +130,4 @@ public class DatasetController {
         Object jsonArray = datasetService.relativeFilter(userId, dBConnectionId, datasetId, relativeFilter);
         return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.OK).body(jsonArray.toString());
             }
-
-
-   }
+}

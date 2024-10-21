@@ -370,7 +370,7 @@ public class ConnectionPoolService {
                 ResultSet rs = pst.executeQuery();) {
             // statement = _connection.createStatement();
             // resultSet = statement.executeQuery(query);
-            JSONArray jsonArray = ResultSetToJson.convertToJson(rs);
+            JSONArray jsonArray = ResultSetToJson.convertToArray(rs);
             // statement.close();
             return jsonArray;
         } catch (Exception e) {

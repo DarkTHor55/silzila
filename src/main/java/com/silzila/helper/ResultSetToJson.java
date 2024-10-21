@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ResultSetToJson {
-
     // for converting a resultset from DB
     public static JSONArray convertToJson(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
@@ -46,6 +45,28 @@ public class ResultSetToJson {
             });
             result.put(row);
         }
+        return result;
+    }
+    public static JSONArray convertToArray(ResultSet resultSet)throws SQLException{
+        JSONArray result = new JSONArray();
+
+        try {
+            while (resultSet.next()) {
+                // Fetch the first column's value dynamically
+                Object value = resultSet.getObject(1);
+
+                // Handle different value types and nulls
+                if (value == null) {
+                    result.put(JSONObject.NULL);
+                } else {
+                    // Add the all types value directly to the array
+                    result.put(value);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result);
         return result;
     }
 
