@@ -2,6 +2,7 @@ package com.silzila.payload.request;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -19,8 +20,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
         "fieldName",
         "dataType",
         "filterOption",
-        "timeGrain"
+        "timeGrain",
+        "userSelection",
+        "currentSelection"
 })
+
 @Generated("jsonschema2pojo")
 public class ColumnFilter implements Serializable {
 
@@ -43,6 +47,10 @@ public class ColumnFilter implements Serializable {
     @JsonProperty("timeGrain")
     private ColumnFilter.TimeGrain timeGrain;
     private final static long serialVersionUID = -2628722783214042914L;
+    @JsonProperty("userSelection")
+    private List<String> userSelection = null;
+    @JsonProperty("currentSelection")
+    private Boolean currentSelection = false;
 
     /**
      * No args constructor for use in serialization
@@ -64,7 +72,7 @@ public class ColumnFilter implements Serializable {
      */
     public ColumnFilter(String tableId,String tableName,String schemaName,String dbName,
                         String fieldName,String flatFileId, ColumnFilter.DataType dataType,
-            ColumnFilter.FilterOption filterOption, ColumnFilter.TimeGrain timeGrain) {
+            ColumnFilter.FilterOption filterOption, ColumnFilter.TimeGrain timeGrain,List<String> userSelection, Boolean currentSelection) {
         super();
         this.tableId = tableId;
         this.tableName = tableName;
@@ -75,6 +83,8 @@ public class ColumnFilter implements Serializable {
         this.dataType = dataType;
         this.filterOption = filterOption;
         this.timeGrain = timeGrain;
+        this.userSelection = userSelection;
+        this.currentSelection = currentSelection;
     }
 
     @JsonProperty("tableId")
@@ -157,6 +167,25 @@ public class ColumnFilter implements Serializable {
     public void setTimeGrain(ColumnFilter.TimeGrain timeGrain) {
         this.timeGrain = timeGrain;
     }
+    @JsonProperty("userSelection")
+    public List<String> getUserSelection() {
+        return userSelection;
+    }
+
+    @JsonProperty("userSelection")
+    public void setUserSelection(List<String> userSelection) {
+        this.userSelection = userSelection;
+    }
+
+    @JsonProperty("currentSelection")
+    public Boolean getCurrentSelection() {
+        return currentSelection;
+    }
+
+    @JsonProperty("currentSelection")
+    public void setCurrentSelection(Boolean currentSelection) {
+        this.currentSelection = currentSelection;
+    }
 
     @Override
     public String toString() {
@@ -198,6 +227,14 @@ public class ColumnFilter implements Serializable {
         sb.append("timeGrain");
         sb.append('=');
         sb.append(((this.timeGrain == null) ? "<null>" : this.timeGrain));
+        sb.append(',');
+        sb.append("userSelection");
+        sb.append('=');
+        sb.append(((this.userSelection == null) ? "<null>" : this.userSelection));
+        sb.append(',');
+        sb.append("currentSelection");
+        sb.append('=');
+        sb.append(((this.currentSelection == null) ? "<null>" : this.currentSelection));
         sb.append(',');
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');

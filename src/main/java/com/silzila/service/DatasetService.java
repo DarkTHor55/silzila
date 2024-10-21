@@ -555,6 +555,11 @@ public class DatasetService {
        return connectionPoolService.relativeFilter(userId, dBConnectionId, datasetId, relativeFilter);
 
     }
+    public JSONArray syncFilterOption(String userId,List<ColumnFilter>columnFilters, String dBConnectionId, String datasetId){
+
+
+    }
+
 
 
 }

@@ -120,6 +120,15 @@ public class DatasetController {
         return ResponseEntity.status(HttpStatus.OK).body(jsonArrayOrJsonNodeList.toString());
 
     }
+    @PostMapping("/sync-filter-options")
+    public ResponseEntity<?> syncFilterOptions(@RequestHeader Map<String, String> reqHeader,
+                                               @Valid @RequestBody List<ColumnFilter> columnFilter,
+                                               @RequestParam(name = "dbconnectionid", required = false) String dBConnectionId,
+                                               @RequestParam(name = "datasetid", required = false) String datasetId){
+        String userId = reqHeader.get("username");
+        Object jsonArray=datasetService.syncFilterOption(userId,columnFilter,dBConnectionId,datasetId);
+        return ResponseEntity.status(HttpStatus.OK).body(jsonArray.toString());
+    }
 
     @PostMapping("/relative-filter")
     public ResponseEntity<?> relativeFilter(@RequestHeader Map<String, String> reqHeader,
