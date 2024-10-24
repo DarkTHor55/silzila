@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Builder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
         "userSelection"
 })
 @Generated("jsonschema2pojo")
+
 public class Filter implements Serializable {
 
     @JsonProperty("filterType")

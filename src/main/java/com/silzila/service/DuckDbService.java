@@ -498,7 +498,7 @@ public class DuckDbService {
         Statement stmtRecords = conn2.createStatement();
 
         ResultSet resultSet = stmtRecords.executeQuery(query);
-        JSONArray jsonArray = ResultSetToJson.convertToArray(resultSet);
+        JSONArray jsonArray = ResultSetToJson.convertToJson(resultSet);
         stmtRecords.close();
         conn2.close();
 

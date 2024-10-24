@@ -3,10 +3,11 @@ package com.silzila.helper;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,29 +48,82 @@ public class ResultSetToJson {
         }
         return result;
     }
-    public static JSONArray convertToArray(ResultSet resultSet)throws SQLException{
-        JSONArray result = new JSONArray();
+//    public static JSONObject convertToArray(ResultSet resultSet) throws SQLException {
+//        JSONObject result = new JSONObject();
+//        ResultSetMetaData metaData = resultSet.getMetaData();
+//        int numCols = metaData.getColumnCount();
+//
+//        // Initialize arrays for each column
+//        for (int i = 1; i <= numCols; i++) {
+//            String columnName = metaData.getColumnName(i);
+//            result.put(columnName, new JSONArray());
+//        }
+//
+//        try {
+//            while (resultSet.next()) {
+//                for (int i = 1; i <= numCols; i++) {
+//                    String columnName = metaData.getColumnName(i);
+//                    Object value = resultSet.getObject(i);
+//
+//                    // Add the value to the corresponding column's array
+//                    if (value == null) {
+//                        result.getJSONArray(columnName).put(JSONObject.NULL);
+//                    } else {
+//                        result.getJSONArray(columnName).put(value);
+//                    }
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println(result);
+//        return result;
+//    }
+//
+
+    public static JSONObject convertToArray(ResultSet resultSet) throws SQLException {
+        JSONObject result = new JSONObject();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int numCols = metaData.getColumnCount();
+
+        // Map to hold Sets for each column to ensure unique values
+        Map<String, Set<Object>> columnSets = new HashMap<>();
+
+        // Initialize sets for each column
+        for (int i = 1; i <= numCols; i++) {
+            String columnName = metaData.getColumnName(i);
+            columnSets.put(columnName, new HashSet<>());
+        }
 
         try {
             while (resultSet.next()) {
-                // Fetch the first column's value dynamically
-                Object value = resultSet.getObject(1);
+                for (int i = 1; i <= numCols; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(i);
 
-                // Handle different value types and nulls
-                if (value == null) {
-                    result.put(JSONObject.NULL);
-                } else {
-                    // Add the all types value directly to the array
-                    result.put(value);
+                    // Add the value to the corresponding column's set for uniqueness
+                    if (value == null) {
+                        columnSets.get(columnName).add(JSONObject.NULL);
+                    } else {
+                        columnSets.get(columnName).add(value);
+                    }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // Convert sets back to JSONArray and add to JSONObject
+        for (int i = 1; i <= numCols; i++) {
+            String columnName = metaData.getColumnName(i);
+            JSONArray jsonArray = new JSONArray(columnSets.get(columnName));
+            result.put(columnName, jsonArray);
+        }
+
         System.out.println(result);
         return result;
     }
-
     // for file uploads,preview schema changes 
     public static JSONArray convertToJsonFlatFiles(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();

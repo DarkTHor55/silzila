@@ -48,7 +48,7 @@ public class ColumnFilter implements Serializable {
     private ColumnFilter.TimeGrain timeGrain;
     private final static long serialVersionUID = -2628722783214042914L;
     @JsonProperty("userSelection")
-    private List<String> userSelection = null;
+    private List<Object> userSelection = null;
     @JsonProperty("currentSelection")
     private Boolean currentSelection = false;
 
@@ -72,7 +72,7 @@ public class ColumnFilter implements Serializable {
      */
     public ColumnFilter(String tableId,String tableName,String schemaName,String dbName,
                         String fieldName,String flatFileId, ColumnFilter.DataType dataType,
-            ColumnFilter.FilterOption filterOption, ColumnFilter.TimeGrain timeGrain,List<String> userSelection, Boolean currentSelection) {
+            ColumnFilter.FilterOption filterOption, ColumnFilter.TimeGrain timeGrain,List<Object> userSelection, Boolean currentSelection) {
         super();
         this.tableId = tableId;
         this.tableName = tableName;
@@ -168,12 +168,12 @@ public class ColumnFilter implements Serializable {
         this.timeGrain = timeGrain;
     }
     @JsonProperty("userSelection")
-    public List<String> getUserSelection() {
+    public List<Object> getUserSelection() {
         return userSelection;
     }
 
     @JsonProperty("userSelection")
-    public void setUserSelection(List<String> userSelection) {
+    public void setUserSelection(List<Object> userSelection) {
         this.userSelection = userSelection;
     }
 

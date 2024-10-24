@@ -8,9 +8,12 @@ import javax.validation.Valid;
 
 import com.silzila.exception.ExpectationFailedException;
 import com.silzila.payload.request.*;
+import com.silzila.querybuilder.syncFilterOption.SyncFilterOptionsQueryComposer;
+import com.silzila.querybuilder.syncFilterOption.SyncFilterQueryPostgres;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -67,6 +70,8 @@ public class DatasetService {
     @Autowired
     DatasetAndFileDataBuffer buffer;
 
+    @Autowired
+    SyncFilterOptionsQueryComposer syncFilterOptionsQueryComposer;
     ObjectMapper objectMapper = new ObjectMapper();
 
     // HELPER FUNCTION
@@ -555,11 +560,37 @@ public class DatasetService {
        return connectionPoolService.relativeFilter(userId, dBConnectionId, datasetId, relativeFilter);
 
     }
-    public JSONArray syncFilterOption(String userId,List<ColumnFilter>columnFilters, String dBConnectionId, String datasetId){
+    public JSONObject syncFilterOption(String userId,List<ColumnFilter>columnFilters, String dBConnectionId, String datasetId)
+            throws RecordNotFoundException, SQLException, JsonProcessingException,BadRequestException, ClassNotFoundException{
 
+        // Check for null or empty parameters
+        if (userId == null || userId.isEmpty() || datasetId == null || datasetId.isEmpty()) {
+            throw new BadRequestException("User ID, DB Connection ID, and Dataset ID must not be null or empty");
+        }
+
+        // Load dataset
+        DatasetDTO ds = loadDatasetInBuffer(dBConnectionId, datasetId, userId);
+        System.out.println(ds+"dddddddddddddddddddddddddddddddddddddddddddxsssssssssssssssssssssssssss");
+
+        // For DB based datasets, connection id is must
+        if (ds.getIsFlatFileData() == false) {
+            if (dBConnectionId == null || dBConnectionId.isEmpty()) {
+                throw new BadRequestException("Error: DB Connection Id can't be empty!");
+            }
+            /*
+             * load connection details in buffer.
+             * create connection pool (if not) and then get vendor name.
+             * SQL Dialect will be different based on vendor name
+             */
+            String vendorName = connectionPoolService.getVendorNameFromConnectionPool(dBConnectionId, userId);
+            String query = SyncFilterOptionsQueryComposer.composeQuery(columnFilters, ds, vendorName,userId);
+            logger.info("\n******* QUERY **********\n" + query);
+            JSONObject jsonObject = connectionPoolService.runQueryObject(dBConnectionId, userId, query);
+            System.out.println();
+            return jsonObject;
+        }
+        return null;
 
     }
-
-
-
 }
+

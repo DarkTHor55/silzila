@@ -1,5 +1,6 @@
 package com.silzila.querybuilder.filteroptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -141,7 +142,7 @@ public class FilterQueryPostgres {
             throw new BadRequestException("Error: Wrong combination of Data Type & Filter Option!");
         }
         return query;
-
     }
 
 }
+

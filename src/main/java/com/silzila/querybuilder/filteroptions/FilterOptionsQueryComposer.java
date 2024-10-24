@@ -1,5 +1,6 @@
 package com.silzila.querybuilder.filteroptions;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -124,4 +125,5 @@ public class FilterOptionsQueryComposer {
         }
         return finalQuery;
     }
+
 }

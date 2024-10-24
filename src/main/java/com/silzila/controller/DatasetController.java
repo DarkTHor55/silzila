@@ -124,7 +124,9 @@ public class DatasetController {
     public ResponseEntity<?> syncFilterOptions(@RequestHeader Map<String, String> reqHeader,
                                                @Valid @RequestBody List<ColumnFilter> columnFilter,
                                                @RequestParam(name = "dbconnectionid", required = false) String dBConnectionId,
-                                               @RequestParam(name = "datasetid", required = false) String datasetId){
+                                               @RequestParam(name = "datasetid", required = false) String datasetId)
+            throws RecordNotFoundException, SQLException, JsonMappingException, JsonProcessingException,
+            BadRequestException, ClassNotFoundException{
         String userId = reqHeader.get("username");
         Object jsonArray=datasetService.syncFilterOption(userId,columnFilter,dBConnectionId,datasetId);
         return ResponseEntity.status(HttpStatus.OK).body(jsonArray.toString());
