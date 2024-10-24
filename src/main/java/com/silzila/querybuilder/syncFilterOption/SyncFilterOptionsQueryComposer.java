@@ -25,12 +25,12 @@ public class SyncFilterOptionsQueryComposer {
         String finalQuery = "";
         List<String>allIds=allTableIds(cf);
         String fromQuery= RelationshipClauseGeneric.buildRelationship(allIds, ds.getDataSchema(), vendorName);
-        System.out.println("\n"+fromQuery+"----------"+"\n");
+        System.out.println(vendorName+"*******************************************************************************************************\n\n\n");
 
-//reltionship class genric
+
 //        create table with all data in it
-        if (vendorName.equals("postgresql")){
-            logger.info("------ inside postges");
+        if (vendorName.equals("postgresql")||vendorName.equals("redshift")){
+            logger.info("------ inside postges/redshift");
             finalQuery = SyncFilterQueryPostgres.getSyncFilterOptions(cf,fromQuery,vendorName);
             System.out.println(finalQuery);
         }else if (vendorName.equals("mysql")) {
@@ -40,34 +40,47 @@ public class SyncFilterOptionsQueryComposer {
             logger.info("------ inside Oracle block");
             finalQuery = SyncFilterQueryOracle.getSyncFilterOptions(cf, fromQuery,vendorName);
         }
-
-
-        else if (vendorName.equals("sqlserver")) {
-            logger.info("------ inside sql server block");
-            finalQuery = SyncFilterQuerySqlserver.getSyncFilterOptions(cf, fromQuery,vendorName);
-        }
-//        else if (vendorName.equals("redshift")) {
-//            logger.info("------ inside redshift block");
-//            finalQuery = SyncFilterQueryRedshift.getSyncFilterOptions(cf, fromQuery,vendorName);
-//        } else if (vendorName.equals("databricks")) {
+//        Not Checked
+//        else if (vendorName.equals("databricks")) {
 //            logger.info("------ inside databricks block");
-//            finalQuery = SyncFilterQueryDatabricks.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("duckdb")) {
+//            finalQuery = SyncFilterQueryDatabricks.getSyncFilterOptions(cf, fromQuery,vendorName);
+//        }
+
+        else if (vendorName.equals("snowflake")) {
+            logger.info("------ inside snowflake block");
+            finalQuery = SyncFilterQuerySnowflake.getSyncFilterOptions(cf, fromQuery,vendorName);
+        } else if (vendorName.equals("db2")) {
+            logger.info("------ inside DB2 block");
+            finalQuery = SyncFilterQueryDB2.getSyncFilterOptions(cf, fromQuery,vendorName);
+        }
+
+//        else if (vendorName.equals("motherduck")) {
+//
 //            logger.info("------ inside duckdb block");
-//            finalQuery = SyncFilterQueryDuckDb.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("bigquery")) {
-//            logger.info("------ inside bigquery block");
-//            finalQuery = SyncFilterQueryBigquery.getSyncFilterOptions(cf, null);
-//        }else if (vendorName.equals("snowflake")) {
-//            logger.info("------ inside snowflake block");
-//            finalQuery = SyncFilterQuerySnowflake.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("motherduck")) {
+//            finalQuery = SyncFilterQueryDuckDb.getSyncFilterOptions(cf, fromQuery,vendorName);
+//        }          else if (vendorName.equals("motherduck")) {
 //            logger.info("------ inside motherduck block");
 //            finalQuery = SyncFilterQueryMotherduck.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("db2")) {
-//            logger.info("------ inside DB2 block");
-//            finalQuery = SyncFilterQueryDB2.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("teradata")) {
+//        }
+
+
+
+//        else if (vendorName.equals("sqlserver")) {
+//            logger.info("------ inside sql server block");
+//            finalQuery = SyncFilterQuerySqlserver.getSyncFilterOptions(cf, fromQuery,vendorName);
+//        }
+
+
+
+
+
+          else if (vendorName.equals("bigquery")) {
+            logger.info("------ inside bigquery block");
+            finalQuery = SyncFilterQueryBigquery.getSyncFilterOptions(cf, fromQuery,vendorName);
+        }
+
+
+//          else if (vendorName.equals("teradata")) {
 //            logger.info("------ inside teradata block");
 //            finalQuery = SyncFilterQueryTeraData.getSyncFilterOptions(cf, null);
 //        }
