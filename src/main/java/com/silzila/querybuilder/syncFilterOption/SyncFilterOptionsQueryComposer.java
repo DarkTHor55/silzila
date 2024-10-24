@@ -29,17 +29,26 @@ public class SyncFilterOptionsQueryComposer {
 
 //reltionship class genric
 //        create table with all data in it
-        if (vendorName.equals("postgresql") || vendorName.equals("redshift")) {
-            logger.info("------ inside postges/redshift block");
+        if (vendorName.equals("postgresql")){
+            logger.info("------ inside postges");
             finalQuery = SyncFilterQueryPostgres.getSyncFilterOptions(cf,fromQuery,vendorName);
             System.out.println(finalQuery);
         }else if (vendorName.equals("mysql")) {
             logger.info("------ inside mysql block");
             finalQuery = SyncFilterQueryMysql.getSyncFilterOptions(cf,fromQuery,vendorName);
+        } else if (vendorName.equals("oracle")) {
+            logger.info("------ inside Oracle block");
+            finalQuery = SyncFilterQueryOracle.getSyncFilterOptions(cf, fromQuery,vendorName);
         }
-//        else if (vendorName.equals("sqlserver")) {
-//            logger.info("------ inside sql server block");
-//            finalQuery = SyncFilterQuerySqlserver.getSyncFilterOptions(cf, null);
+
+
+        else if (vendorName.equals("sqlserver")) {
+            logger.info("------ inside sql server block");
+            finalQuery = SyncFilterQuerySqlserver.getSyncFilterOptions(cf, fromQuery,vendorName);
+        }
+//        else if (vendorName.equals("redshift")) {
+//            logger.info("------ inside redshift block");
+//            finalQuery = SyncFilterQueryRedshift.getSyncFilterOptions(cf, fromQuery,vendorName);
 //        } else if (vendorName.equals("databricks")) {
 //            logger.info("------ inside databricks block");
 //            finalQuery = SyncFilterQueryDatabricks.getSyncFilterOptions(cf, null);
@@ -47,13 +56,9 @@ public class SyncFilterOptionsQueryComposer {
 //            logger.info("------ inside duckdb block");
 //            finalQuery = SyncFilterQueryDuckDb.getSyncFilterOptions(cf, null);
 //        } else if (vendorName.equals("bigquery")) {
-//            logger.info("------ inside bigquery block");    "currentSelection" : true
-
+//            logger.info("------ inside bigquery block");
 //            finalQuery = SyncFilterQueryBigquery.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("oracle")) {
-//            logger.info("------ inside Oracle block");
-//            finalQuery = SyncFilterQueryOracle.getSyncFilterOptions(cf, null);
-//        } else if (vendorName.equals("snowflake")) {
+//        }else if (vendorName.equals("snowflake")) {
 //            logger.info("------ inside snowflake block");
 //            finalQuery = SyncFilterQuerySnowflake.getSyncFilterOptions(cf, null);
 //        } else if (vendorName.equals("motherduck")) {
@@ -65,9 +70,10 @@ public class SyncFilterOptionsQueryComposer {
 //        } else if (vendorName.equals("teradata")) {
 //            logger.info("------ inside teradata block");
 //            finalQuery = SyncFilterQueryTeraData.getSyncFilterOptions(cf, null);
-//        } else {
-//            throw new BadRequestException("Error: DB vendor Name is wrong!");
 //        }
+        else {
+            throw new BadRequestException("Error: DB vendor Name is wrong!");
+        }
 
         return finalQuery;
     }
