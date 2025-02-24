@@ -13,6 +13,7 @@ public class FilterQueryDuckDb {
 
     private static final Logger logger = LogManager.getLogger(FilterQueryDuckDb.class);
 
+
     public static String getFilterOptions(ColumnFilter req, Table table) throws BadRequestException {
         logger.info("=========== FilterQueryDuckDb fn calling...");
         /*
@@ -21,18 +22,16 @@ public class FilterQueryDuckDb {
          * ************************************************
          */
         String query = "";
-        String fromClause ="";
-        //if table is null getting information from column filter request directly
-        if(table==null){
-            fromClause = " FROM vw_" + req.getTableId() + "_" + req.getFlatFileId().substring(0, 8) + " ";
-        }else if(req.getIsCalculatedField()){
+        String fromClause = "";       
+         // String selectField = req.getIsCalculatedField()?req.getFieldName():req.getTableId()+ "."  + req.getFieldName();
+         if(req.getIsCalculatedField()){
             fromClause =" FROM " + req.getFromClause() + " ";
-        }         
+        }        
         else{
-
             fromClause = " FROM vw_" + table.getAlias() + "_" + table.getFlatFileId().substring(0, 8) + " ";
+      
         }
-        
+
         if (req.getWhereClause() != null) {
             fromClause = fromClause + " " + req.getWhereClause() ;
         }
@@ -41,6 +40,7 @@ public class FilterQueryDuckDb {
             query = "SELECT DISTINCT " + req.getFieldName() + fromClause + "ORDER BY 1";
         }
 
+        
         /*
          * ************************************************
          * get distinct & Range values - number fields

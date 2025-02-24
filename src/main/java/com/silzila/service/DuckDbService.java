@@ -109,6 +109,18 @@ public class DuckDbService {
         }
     }
 
+    public JSONObject runQueryObject(String query) throws SQLException {
+
+        Connection conn2 = ((DuckDBConnection) conn).duplicate();
+        Statement stmtRecords = conn2.createStatement();
+
+        ResultSet resultSet = stmtRecords.executeQuery(query);
+        JSONObject jsonArray = ResultSetToJson.convertToArray(resultSet);
+        stmtRecords.close();
+        conn2.close();
+
+        return jsonArray;
+    }
     // read csv file and get metadata
     public FileUploadResponseDuckDb readCsv(String fileName) throws SQLException {
         // String filePath = SILZILA_DIR + "/" + fileName;
