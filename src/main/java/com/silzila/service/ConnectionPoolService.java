@@ -1284,18 +1284,19 @@ public class ConnectionPoolService {
         // run a simple query and see it record is fetched
         try {
             statement = connection.createStatement();
-            if (request.getVendor().equals("db2")) {
-                resultSet = statement.executeQuery("SELECT 1 FROM SYSIBM.SYSDUMMY1 ");
-            } else {
-                resultSet = statement.executeQuery("SELECT 1 ");
-            }
-            while (resultSet.next()) {
-                rowCount++;
-            }
-            // return error if no record is fetched
-            if (rowCount == 0) {
-                throw new BadRequestException("Error: Something wrong!");
-            }
+             resultSet = statement.executeQuery(request.getVendor().equals("db2") 
+                ? "SELECT 1 FROM SYSIBM.SYSDUMMY1" 
+                : "SELECT 1");
+
+        // Process result set and check if any records were fetched
+        while (resultSet.next()) {
+            rowCount++;
+        }
+
+        // If no records are fetched, throw an error
+        if (rowCount == 0) {
+            throw new BadRequestException("Error: Something wrong!");
+        }
         } catch (Exception e) {
             logger.warn("error: " + e.toString());
             throw e;

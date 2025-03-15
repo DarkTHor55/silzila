@@ -953,6 +953,18 @@ public class DuckDbService {
         stmtRecords.close();
         conn2.close();
     }
+    public JSONObject runQueryObject(String query) throws SQLException {
+
+        Connection conn2 = ((DuckDBConnection) conn).duplicate();
+        Statement stmtRecords = conn2.createStatement();
+
+        ResultSet resultSet = stmtRecords.executeQuery(query);
+        JSONObject jsonArray = ResultSetToJson.convertToArray(resultSet);
+        stmtRecords.close();
+        conn2.close();
+
+        return jsonArray;
+    }
 
     public JSONArray changeSchmaforExcel(FileUploadRevisedInfoRequest revisedInfoRequest)
             throws SQLException, ExpectationFailedException {
